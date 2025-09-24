@@ -1,10 +1,10 @@
 const clothingItems = require("../models/clothingItem");
-const { handleError } = require("../utils/handelErrors");
+const { handleError } = require("../utils/handleErrors");
 
 const createItem = (req, res) => {
-  const { name, link, weather, imageUrl } = req.body;
+  const { name, weather, imageUrl } = req.body;
   clothingItems
-    .create({ name, link, weather, imageUrl })
+    .create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send(item))
     .catch((error) => {
       console.log("createItem controller has", error.name);
@@ -19,20 +19,6 @@ const getItems = (req, res) => {
     .then((items) => res.status(200).send(items))
     .catch((error) => {
       console.log("getItems controller has", error.name);
-      const { status, message } = handleError(error);
-      res.status(status).send({ message });
-    });
-};
-
-const updateItem = (req, res) => {
-  const { itemId } = req.params;
-  const { imageUrl } = req.body;
-  clothingItems
-    .findByIdAndUpdate(itemId, { $set: { imageUrl } })
-    .orFail()
-    .then((item) => res.status(200).send(item))
-    .catch((error) => {
-      console.log("updateItem controller has", error.name);
       const { status, message } = handleError(error);
       res.status(status).send({ message });
     });
@@ -54,7 +40,7 @@ const deleteItem = (req, res) => {
     });
 };
 
-likeItem = (req, res) => {
+const likeItem = (req, res) => {
   clothingItems
     .findByIdAndUpdate(
       req.params.itemId,
@@ -70,7 +56,7 @@ likeItem = (req, res) => {
     });
 };
 
-dislikeItem = (req, res) => {
+const dislikeItem = (req, res) => {
   clothingItems
     .findByIdAndUpdate(
       req.params.itemId,
@@ -82,7 +68,6 @@ dislikeItem = (req, res) => {
       if (!item) {
         return res.status(404).send({ message: "Item not found" });
       }
-      return res.status(200).send({ message: "Item deleted successfully" });
     })
     .catch((error) => {
       console.log("dislikeItem controller has", error.name);
@@ -94,7 +79,6 @@ dislikeItem = (req, res) => {
 module.exports = {
   createItem,
   getItems,
-  updateItem,
   deleteItem,
   likeItem,
   dislikeItem,

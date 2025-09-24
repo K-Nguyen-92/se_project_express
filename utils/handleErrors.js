@@ -1,4 +1,4 @@
-export const handleError = (error) => {
+const handleError = (error) => {
   if (error.name === "ValidationError") {
     return { status: 400, message: error.message };
   } else if (error.name === "CastError") {
@@ -8,3 +8,5 @@ export const handleError = (error) => {
   }
   return { status: 500, message: "Internal Server Error" };
 };
+
+module.exports = { handleError };
