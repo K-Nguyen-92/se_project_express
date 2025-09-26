@@ -15,11 +15,9 @@ const createItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 
@@ -31,15 +29,7 @@ const getItems = (req, res) => {
       console.log("getItems controller has", error.name);
       // const { status, message } = handleError(error);
       // res.status(status).send({ message });
-      if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -48,7 +38,7 @@ const deleteItem = (req, res) => {
     .findByIdAndDelete(req.params.itemId)
     .then((item) => {
       if (!item) {
-        return res.status(404).send({ message: "Item not found" });
+        return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       return res.status(200).send({ message: "Item deleted successfully" });
     })
@@ -60,11 +50,9 @@ const deleteItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 
@@ -85,11 +73,11 @@ const likeItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
+      } if (error.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 
@@ -101,12 +89,7 @@ const dislikeItem = (req, res) => {
       { new: true }
     )
     .orFail()
-    .then((item) => {
-      if (!item) {
-        return res.status(BAD_REQUEST).send({ message: "Item not found" });
-      }
-      return res.status(200).send(item);
-    })
+    .then((item) => res.status(200).send(item))
     .catch((error) => {
       console.log("dislikeItem controller has", error.name);
       // const { status, message } = handleError(error);
@@ -115,11 +98,11 @@ const dislikeItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
+      } if (error.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 

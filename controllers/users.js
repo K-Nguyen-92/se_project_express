@@ -1,5 +1,5 @@
-const User = require("../models/user");
 // const { handleError } = require("../utils/handleErrors");
+const User = require("../models/user");
 const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
 
 const getUsers = (req, res) => {
@@ -9,15 +9,7 @@ const getUsers = (req, res) => {
       console.log("getUsers controller has", error.name);
       // const { status, message } = handleError(error);
       // res.status(status).send({ message });
-      if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -33,11 +25,9 @@ const createUser = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 
@@ -54,11 +44,11 @@ const getUser = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } else if (error.name === "DocumentNotFoundError") {
+      } if (error.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } else {
+      } 
         return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      }
+      
     });
 };
 
