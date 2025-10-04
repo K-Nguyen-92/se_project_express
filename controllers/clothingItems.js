@@ -15,9 +15,8 @@ const createItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } 
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      
+      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -50,9 +49,8 @@ const deleteItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } 
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      
+      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -73,11 +71,11 @@ const likeItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } if (error.name === "DocumentNotFoundError") {
+      }
+      if (error.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } 
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      
+      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -98,11 +96,11 @@ const dislikeItem = (req, res) => {
         return res
           .status(BAD_REQUEST)
           .send({ message: "Invalid data provided for creating an item" });
-      } if (error.name === "DocumentNotFoundError") {
+      }
+      if (error.name === "DocumentNotFoundError") {
         return res.status(NOT_FOUND).send({ message: "Resource not found" });
-      } 
-        return res.status(DEFAULT).send({ message: "Internal Server Error" });
-      
+      }
+      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
