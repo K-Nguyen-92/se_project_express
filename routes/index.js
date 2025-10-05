@@ -7,10 +7,12 @@ const {
   login,
   getCurrentUser,
   updateProfile,
+  getUsers,
 } = require("../controllers/users");
 const auth = require("../middlewares/auth");
 
 router.get("/users/me", auth, getCurrentUser);
+router.get("/users", getUsers);
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
 router.post("/signup", createUser);

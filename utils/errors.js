@@ -3,5 +3,13 @@ const NOT_FOUND = 404;
 const DEFAULT = 500;
 const UNAUTHORIZED = 401;
 const EXIST = 409;
+const FORBIDDEN = 403;
 
-module.exports = { BAD_REQUEST, NOT_FOUND, DEFAULT, UNAUTHORIZED, EXIST };
+module.exports = {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  UNAUTHORIZED,
+  EXIST,
+  FORBIDDEN,
+};

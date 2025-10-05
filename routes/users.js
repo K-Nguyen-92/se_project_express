@@ -6,7 +6,7 @@ const {
 } = require("../controllers/users");
 const bcrypt = require("bcryptjs");
 
-router.get("/", getUsers);
+// router.get("/", getUsers);
 // router.get("/:userId", getCurrentUser);
 // router.post("/", createUser);
 // router.post("/signup", createUser);

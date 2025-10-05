@@ -1,6 +1,11 @@
 // const { handleError } = require("../utils/handleErrors");
 const clothingItems = require("../models/clothingItem");
-const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  FORBIDDEN,
+} = require("../utils/errors");
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
@@ -34,10 +39,13 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   clothingItems
-    .findByIdAndDelete(req.params.itemId)
+    .findByIdAndDelete(req.user._id)
     .then((item) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
+      }
+      if (!item.owner.equals(req.user._id)) {
+        return res.status(FORBIDDEN).send({ message: "Access denied" });
       }
       return res.status(200).send({ message: "Item deleted successfully" });
     })

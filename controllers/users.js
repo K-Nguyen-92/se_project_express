@@ -1,6 +1,12 @@
 // const { handleError } = require("../utils/handleErrors");
 const User = require("../models/user");
-const { BAD_REQUEST, NOT_FOUND, DEFAULT, EXIST } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  DEFAULT,
+  EXIST,
+  UNAUTHORIZED,
+} = require("../utils/errors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
@@ -36,7 +42,7 @@ const createUser = (req, res) => {
       // const { status, message } = handleError(error);
       // res.status(status).send({ message });
       if (error.code === 11000) {
-        return res.status(409).send({
+        return res.status(EXIST).send({
           message: "A user with this email already exists.",
         });
       }
@@ -87,16 +93,28 @@ const login = (req, res) => {
   return User.findOne({ email })
     .select("+password")
     .then((user) => {
-      res.send({
-        token: jwt.sign({ _id: user._id }, JWT_SECRET, {
-          expiresIn: "7d",
-        }),
-        user: {
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          avatar: user.avatar,
-        },
+      if (!user) {
+        return res
+          .status(UNAUTHORIZED)
+          .send({ message: "Invalid credentials" });
+      }
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          return res
+            .status(UNAUTHORIZED)
+            .send({ message: "Invalid credentials" });
+        }
+        res.send({
+          token: jwt.sign({ _id: user._id }, JWT_SECRET, {
+            expiresIn: "7d",
+          }),
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+          },
+        });
       });
     })
     .catch((err) => {
