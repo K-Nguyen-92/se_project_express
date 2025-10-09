@@ -1,4 +1,3 @@
-// const { handleError } = require("../utils/handleErrors");
 const clothingItems = require("../models/clothingItem");
 const {
   BAD_REQUEST,
@@ -14,8 +13,6 @@ const createItem = (req, res) => {
     .then((item) => res.status(201).send(item))
     .catch((error) => {
       console.log("createItem controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       if (error.name === "ValidationError" || error.name === "CastError") {
         return res
           .status(BAD_REQUEST)
@@ -31,28 +28,25 @@ const getItems = (req, res) => {
     .then((items) => res.status(200).send(items))
     .catch((error) => {
       console.log("getItems controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
 const deleteItem = (req, res) => {
   clothingItems
-    .findByIdAndDelete(req.user._id)
+    .findById(req.params.itemId)
     .then((item) => {
       if (!item) {
         return res.status(NOT_FOUND).send({ message: "Item not found" });
       }
       if (!item.owner.equals(req.user._id)) {
-        return res.status(FORBIDDEN).send({ message: "Access denied" });
+        return res.status(FORBIDDEN).send({ message: "Unauthorized Delete" });
       }
-      return res.status(200).send({ message: "Item deleted successfully" });
+      return item.deleteOne();
     })
+    .then(() => res.status(200).send({ message: "Item deleted successfully" }))
     .catch((error) => {
       console.log("deleteItem controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       if (error.name === "ValidationError" || error.name === "CastError") {
         return res
           .status(BAD_REQUEST)
@@ -73,8 +67,6 @@ const likeItem = (req, res) => {
     .then((item) => res.status(200).send(item))
     .catch((error) => {
       console.log("likeItem controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       if (error.name === "ValidationError" || error.name === "CastError") {
         return res
           .status(BAD_REQUEST)
@@ -98,8 +90,6 @@ const dislikeItem = (req, res) => {
     .then((item) => res.status(200).send(item))
     .catch((error) => {
       console.log("dislikeItem controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       if (error.name === "ValidationError" || error.name === "CastError") {
         return res
           .status(BAD_REQUEST)

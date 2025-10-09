@@ -10,3 +10,6 @@
 // };
 
 // module.exports = { handleError };
+
+// const { status, message } = handleError(error);
+// res.status(status).send({ message });
