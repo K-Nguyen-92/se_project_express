@@ -116,8 +116,6 @@ const updateProfile = (req, res) => {
     )
     .catch((error) => {
       console.log("updateProfile controller has", error.name);
-      // const { status, message } = handleError(error);
-      // res.status(status).send({ message });
       if (error.name === "ValidationError" || error.name === "CastError") {
         return res
           .status(BAD_REQUEST)

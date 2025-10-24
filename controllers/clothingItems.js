@@ -42,9 +42,12 @@ const deleteItem = (req, res) => {
       if (!item.owner.equals(req.user._id)) {
         return res.status(FORBIDDEN).send({ message: "Unauthorized Delete" });
       }
-      return item.deleteOne();
+      return item
+        .deleteOne()
+        .then(() =>
+          res.status(200).send({ message: "Item deleted successfully" })
+        );
     })
-    .then(() => res.status(200).send({ message: "Item deleted successfully" }))
     .catch((error) => {
       console.log("deleteItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {

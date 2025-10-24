@@ -2,6 +2,11 @@
 
 The back-end project is focused on creating a server for the WTWR application. Project built to work with databases, set up security and testing, and deploy web applications on a remote machine.
 
+## Project Pitch Video
+
+Check out [this video](https://drive.google.com/file/d/1etZJxblzMMZ-1jsaebsLrw4Poua_nJDK/view?usp=drive_link), where I describe my
+project and some challenges I faced while building it.
+
 ## Running the Project
 
 `npm run start` — to launch the server
