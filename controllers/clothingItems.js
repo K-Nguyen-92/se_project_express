@@ -13,7 +13,7 @@ const {
   ConflictError,
 } = require("../errors/customErrors");
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
   clothingItems
     .create({ name, weather, imageUrl, owner: req.user._id })
@@ -28,7 +28,7 @@ const createItem = (req, res) => {
     });
 };
 
-const getItems = (req, res) => {
+const getItems = (req, res, next) => {
   clothingItems
     .find({})
     .then((items) => res.status(200).send(items))
@@ -38,7 +38,7 @@ const getItems = (req, res) => {
     });
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   clothingItems
     .findById(req.params.itemId)
     .then((item) => {
@@ -64,7 +64,7 @@ const deleteItem = (req, res) => {
     });
 };
 
-const likeItem = (req, res) => {
+const likeItem = (req, res, next) => {
   clothingItems
     .findByIdAndUpdate(
       req.params.itemId,
@@ -86,7 +86,7 @@ const likeItem = (req, res) => {
     });
 };
 
-const dislikeItem = (req, res) => {
+const dislikeItem = (req, res, next) => {
   clothingItems
     .findByIdAndUpdate(
       req.params.itemId,
