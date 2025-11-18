@@ -10,13 +10,17 @@ const {
   getUsers,
 } = require("../controllers/users");
 const auth = require("../middlewares/auth");
+const {
+  validateSignUpModal,
+  validateLoginModal,
+} = require("../middlewares/validation");
 
 router.get("/users/me", auth, getCurrentUser);
 router.get("/users", getUsers);
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
-router.post("/signup", createUser);
-router.post("/signin", login);
+router.post("/signup", validateSignUpModal, createUser);
+router.post("/signin", validateLoginModal, login);
 router.patch("/users/me", auth, updateProfile);
 
 router.use((req, res) => {

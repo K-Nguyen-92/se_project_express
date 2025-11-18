@@ -5,6 +5,13 @@ const {
   DEFAULT,
   FORBIDDEN,
 } = require("../utils/errors");
+const {
+  BadRequestError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  ConflictError,
+} = require("../errors/customErrors");
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
@@ -14,11 +21,10 @@ const createItem = (req, res) => {
     .catch((error) => {
       console.log("createItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
+        next(new BadRequestError("Invalid data provided"));
+      } else {
+        next(error);
       }
-      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -28,7 +34,7 @@ const getItems = (req, res) => {
     .then((items) => res.status(200).send(items))
     .catch((error) => {
       console.log("getItems controller has", error.name);
-      return res.status(DEFAULT).send({ message: "Internal Server Error" });
+      next(error);
     });
 };
 
@@ -37,10 +43,10 @@ const deleteItem = (req, res) => {
     .findById(req.params.itemId)
     .then((item) => {
       if (!item) {
-        return res.status(NOT_FOUND).send({ message: "Item not found" });
+        next(new NotFoundError("Item not found"));
       }
       if (!item.owner.equals(req.user._id)) {
-        return res.status(FORBIDDEN).send({ message: "Unauthorized Delete" });
+        next(new ForbiddenError("Unauthorized Delete"));
       }
       return item
         .deleteOne()
@@ -51,11 +57,10 @@ const deleteItem = (req, res) => {
     .catch((error) => {
       console.log("deleteItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
+        next(new BadRequestError("Invalid data provided"));
+      } else {
+        next(error);
       }
-      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -71,14 +76,13 @@ const likeItem = (req, res) => {
     .catch((error) => {
       console.log("likeItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
+        next(new BadRequestError("Invalid data provided"));
       }
       if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        next(new NotFoundError("Item not found"));
+      } else {
+        next(error);
       }
-      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 
@@ -94,14 +98,13 @@ const dislikeItem = (req, res) => {
     .catch((error) => {
       console.log("dislikeItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        return res
-          .status(BAD_REQUEST)
-          .send({ message: "Invalid data provided for creating an item" });
+        next(new BadRequestError("Invalid data provided"));
       }
       if (error.name === "DocumentNotFoundError") {
-        return res.status(NOT_FOUND).send({ message: "Resource not found" });
+        next(new NotFoundError("Item not found"));
+      } else {
+        next(error);
       }
-      return res.status(DEFAULT).send({ message: "Internal Server Error" });
     });
 };
 

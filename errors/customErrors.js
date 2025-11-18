@@ -37,7 +37,7 @@ class ConflictError extends Error {
     this.status = 409;
   }
 }
-// Export them
+
 module.exports = {
   BadRequestError,
   UnauthorizedError,

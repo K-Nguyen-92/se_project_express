@@ -21,12 +21,11 @@ app.use(cors());
 //   next();
 // });
 app.use("/", mainRouter);
-// app.use(errorHandler);
-// app.use(requestLogger);
-// app.use(routes);
-// app.use(errorLogger); // enabling the error logger
-// app.use(errors()); // celebrate error handler
-// app.use(errorHandler); //centralized error handler
+app.use(requestLogger);
+app.use(routes);
+app.use(errorLogger);
+app.use(errors());
+app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
