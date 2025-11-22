@@ -1,9 +1,7 @@
 const clothingItems = require("../models/clothingItem");
-const {
-  BadRequestError,
-  ForbiddenError,
-  NotFoundError,
-} = require("../errors/customErrors");
+const BadRequestError = require("../errors/BadRequestError");
+const ForbiddenError = require("../errors/ForbiddenError");
+const NotFoundError = require("../errors/NotFoundError");
 
 const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
@@ -35,10 +33,10 @@ const deleteItem = (req, res, next) => {
     .findById(req.params.itemId)
     .then((item) => {
       if (!item) {
-        next(new NotFoundError("Item not found"));
+        return next(new NotFoundError("Item not found"));
       }
       if (!item.owner.equals(req.user._id)) {
-        next(new ForbiddenError("Unauthorized Delete"));
+        return next(new ForbiddenError("Unauthorized Delete"));
       }
       return item
         .deleteOne()

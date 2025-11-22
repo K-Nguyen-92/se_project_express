@@ -1,5 +1,6 @@
 const { Joi, celebrate } = require("celebrate");
 const validator = require("validator");
+
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
@@ -60,7 +61,7 @@ const validateLoginModal = celebrate({
 
 const validateClothesId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().hex().length(24),
+    itemId: Joi.string().hex().length(24),
   }),
 });
 
