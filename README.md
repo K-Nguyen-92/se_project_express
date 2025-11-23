@@ -15,6 +15,11 @@ and some challenges I faced while building it:
 - [Front End Website] (https://gcp-wtwr.ignorelist.com/)
 - [Back End Website] (https://api.gcp-wtwr.ignorelist.com/)
 
+## Project Repo
+
+- [Back End Repo](https://github.com/K-Nguyen-92/se_project_express)
+- [Front End Repo](https://github.com/K-Nguyen-92/se_project_react)
+
 ## Running the Project
 
 `npm run start` — to launch the server

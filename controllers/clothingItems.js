@@ -66,13 +66,12 @@ const likeItem = (req, res, next) => {
     .catch((error) => {
       console.log("likeItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        next(new BadRequestError("Invalid data provided"));
+        return next(new BadRequestError("Invalid data provided"));
       }
       if (error.name === "DocumentNotFoundError") {
-        next(new NotFoundError("Item not found"));
-      } else {
-        next(error);
+        return next(new NotFoundError("Item not found"));
       }
+      return next(error);
     });
 };
 
@@ -88,13 +87,12 @@ const dislikeItem = (req, res, next) => {
     .catch((error) => {
       console.log("dislikeItem controller has", error.name);
       if (error.name === "ValidationError" || error.name === "CastError") {
-        next(new BadRequestError("Invalid data provided"));
+        return next(new BadRequestError("Invalid data provided"));
       }
       if (error.name === "DocumentNotFoundError") {
-        next(new NotFoundError("Item not found"));
-      } else {
-        next(error);
+        return next(new NotFoundError("Item not found"));
       }
+      return next(error);
     });
 };
 
